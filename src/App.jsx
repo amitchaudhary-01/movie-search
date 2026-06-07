@@ -42,27 +42,21 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-6">
+    <div className="min-h-screen bg-blue-200 text-black p-6">
       <h1 className="text-3xl font-bold text-center mb-6">
         🎬 Movie Search App
       </h1>
 
       {/* Input Section */}
       <div className="max-w-xl mx-auto flex gap-2">
-        <input
-          type="text"
-          placeholder="Search movies..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+        <input type="text"placeholder="Search movies..."value={query}
+          onChange={(e) => {
+              setQuery(e.target.value);
+              setError("");
+            }}
           onKeyDown={handleKey}
-          className="w-full p-3 rounded bg-gray-800 border border-gray-700 focus:outline-none"
-        />
-        <button
-          onClick={fetchMovies}
-          className="px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded"
-        >
-          Search
-        </button>
+          className="w-full p-3 rounded bg-white border border-gray-700 focus:outline-none"/>
+        <button onClick={fetchMovies}className="px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded">Search</button>
       </div>
 
       {/* Loading */}
@@ -72,19 +66,14 @@ function App() {
       {error && <p className="text-center text-red-400 mt-4">{error}</p>}
 
       {/* Movie Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 mt-8">
-        {movies.map((movie) => (
-          <div
-            key={movie.imdbID}
-            className="bg-gray-800 p-3 rounded shadow hover:scale-105 transition"
-          >
-            <img
-              src={movie.Poster !== "N/A" ? movie.Poster : "/no-image.png"}
-              alt={movie.Title}
-              className="w-full h-64 object-cover rounded"
-            />
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mt-8">
+        {
+        movies.map((movie) => (
+          <div key={movie.imdbID} className="bg-blue-200 p-3 rounded shadow hover:scale-105 transition">
+            <img src={movie.Poster !== "N/A" ? movie.Poster : "/no-image.png"}alt={movie.Title} className="w-full h-64 object-cover rounded"/>
             <h2 className="mt-3 font-semibold">{movie.Title}</h2>
             <p className="text-gray-400">{movie.Year}</p>
+            <button onClick={fetchMovies} className="px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded">Download</button>
           </div>
         ))}
       </div>
