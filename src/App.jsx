@@ -3,6 +3,7 @@ import axios from "axios";
 
 function App() {
   const [query, setQuery] = useState("");
+  const [darkMode, setDarkMode] = useState(false);
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -41,44 +42,87 @@ function App() {
     if (e.key === "Enter") fetchMovies();
   };
 
-  return (
-    <div className="min-h-screen bg-blue-200 text-black p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">
-        🎬 Movie Search App
-      </h1>
+ 
+     return (
+  <div
+    className={
+      darkMode
+        ? "min-h-screen bg-gray-900 text-white p-6"
+        : "min-h-screen bg-blue-200 text-black p-6"
+    }
+  >
+    {/* Header */}
+    <h1 className="text-3xl font-bold text-center mb-6">
+      🎬 Movie Search App
+    </h1>
 
-      {/* Input Section */}
-      <div className="max-w-xl mx-auto flex gap-2">
-        <input type="text"placeholder="Search movies..."value={query}
-          onChange={(e) => {
-              setQuery(e.target.value);
-              setError("");
-            }}
-          onKeyDown={handleKey}
-          className="w-full p-3 rounded bg-white border border-gray-700 focus:outline-none"/>
-        <button onClick={fetchMovies}className="px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded">Search</button>
-      </div>
-
-      {/* Loading */}
-      {loading && <p className="text-center mt-6">Loading...</p>}
-
-      {/* Error */}
-      {error && <p className="text-center text-red-400 mt-4">{error}</p>}
-
-      {/* Movie Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mt-8">
-        {
-        movies.map((movie) => (
-          <div key={movie.imdbID} className="bg-blue-200 p-3 rounded shadow hover:scale-105 transition">
-            <img src={movie.Poster !== "N/A" ? movie.Poster : "/no-image.png"}alt={movie.Title} className="w-full h-64 object-cover rounded"/>
-            <h2 className="mt-3 font-semibold">{movie.Title}</h2>
-            <p className="text-gray-400">{movie.Year}</p>
-            <button onClick={fetchMovies} className="px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded">Download</button>
-          </div>
-        ))}
-      </div>
+    {/* Dark Mode Toggle */}
+    <div className="flex justify-end mb-4">
+      <button
+        onClick={() => setDarkMode(!darkMode)}
+        className="px-4 py-2 bg-gray-700 text-white rounded"
+      >
+        {darkMode ? "Light Mode" : "Dark Mode"}
+      </button>
     </div>
-  );
+
+    {/* Input Section */}
+    <div className="max-w-xl mx-auto flex gap-2">
+      <input
+        type="text"
+        placeholder="Search movies..."
+        value={query}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          setError("");
+        }}
+        onKeyDown={handleKey}
+        className="w-full p-3 rounded bg-white text-black border border-gray-700 focus:outline-none"
+      />
+
+      <button
+        onClick={fetchMovies}
+        className="px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded"
+      >
+        Search
+      </button>
+    </div>
+
+    {/* Loading */}
+    {loading && <p className="text-center mt-6">Loading...</p>}
+
+    {/* Error */}
+    {error && <p className="text-center text-red-400 mt-4">{error}</p>}
+
+    {/* Movie Grid */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mt-8">
+      {movies.map((movie) => (
+        <div
+          key={movie.imdbID}
+          className={
+            darkMode
+              ? "bg-gray-800 p-3 rounded shadow hover:scale-105 transition"
+              : "bg-white p-3 rounded shadow hover:scale-105 transition"
+          }
+        >
+          <img
+            src={movie.Poster !== "N/A" ? movie.Poster : "/no-image.png"}
+            alt={movie.Title}
+            className="w-full h-64 object-cover rounded"
+          />
+
+          <h2 className="mt-3 font-semibold">{movie.Title}</h2>
+          <p className="text-gray-400">{movie.Year}</p>
+
+          <button className="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded">
+            Download
+          </button>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+ 
 }
 
 export default App;
